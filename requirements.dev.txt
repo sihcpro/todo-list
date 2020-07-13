@@ -1,0 +1,7 @@
+tox
+tox-current-env
+pytest
+black
+pep8
+bandit
+flake8
