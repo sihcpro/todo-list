@@ -2,7 +2,6 @@ import os
 from datetime import datetime
 
 import pytest
-
 from cfg import logger
 
 TEST_ID = datetime.now().strftime("%Y%m%d-%H:%M:%S")
