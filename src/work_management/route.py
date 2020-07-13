@@ -1,5 +1,7 @@
-from cfg import config
 from xml.dom import NotFoundErr
+
+from cfg import config
+
 from .data_define import AddWorkData, UpdateWorkData
 from .resource import WorkResource
 
@@ -11,8 +13,18 @@ def config_work_management(Domain):
 
     @Domain.registerQuery("show-work")
     def showWork(data, identifier, param):
-        results = session.query(WorkResource).all()
-        return [result.as_dict() for result in results]
+        if identifier < 0:
+            results = session.query(WorkResource).all()
+            return [result.as_dict() for result in results]
+        else:
+            result = (
+                session.query(WorkResource)
+                .filter(WorkResource.id == identifier)
+                .first()
+            )
+            if result is None:
+                raise NotFoundErr("Work not found")
+            return result.as_dict()
 
     @Domain.registerCommand("add-work")
     def addWork(data, identifier, param):

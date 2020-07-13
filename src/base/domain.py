@@ -5,6 +5,7 @@ from http.server import SimpleHTTPRequestHandler
 from urllib.parse import parse_qs
 
 from cfg import logger
+
 from .connection import init_session
 
 
@@ -12,7 +13,9 @@ def loadUrl(path) -> (str, int, dict):
     request = urlparse.urlparse(path)
     request_paths = request.path.split("/")
     request_target = request_paths[1]
-    request_identifier = request_paths[2] if len(request_paths) > 2 else -1
+    request_identifier = (
+        int(request_paths[2]) if len(request_paths) > 2 else -1
+    )
     request_params = parse_qs(request.query)
     return request_target, request_identifier, request_params
 
@@ -44,7 +47,7 @@ class Domain(SimpleHTTPRequestHandler):
                     identifier=request_identifier,
                     param=request_params,
                 )
-                self.responseJson(data=response_data)
+                self.responseJson(code=200, data=response_data)
             else:
                 logger.debug(
                     f"{request_target} not in {Domain.query_handler.keys()}"
@@ -54,11 +57,12 @@ class Domain(SimpleHTTPRequestHandler):
             self.session.rollback()
             logger.exception(e)
             self.responseJson(
+                code=500,
                 data={
                     "status": 500,
                     "message": str(e),
                     "data": getattr(e, "data", {}),
-                }
+                },
             )
 
     def do_POST(self):
@@ -77,7 +81,7 @@ class Domain(SimpleHTTPRequestHandler):
                     identifier=request_identifier,
                     param=request_params,
                 )
-                self.responseJson(data=response_data)
+                self.responseJson(code=200, data=response_data)
             else:
                 logger.debug(
                     f"{request_target} not in {Domain.command_handler.keys()}"
@@ -87,15 +91,16 @@ class Domain(SimpleHTTPRequestHandler):
         except Exception as e:
             logger.exception(e)
             self.responseJson(
+                code=500,
                 data={
                     "status": 500,
                     "message": str(e),
                     "data": getattr(e, "data", {}),
-                }
+                },
             )
 
-    def responseJson(self, data: dict):
-        self.send_response(200)
+    def responseJson(self, code: int, data: dict):
+        self.send_response(code)
         self.send_header("Content-type", "application/json")
         self.end_headers()
         data = json.dumps(data)

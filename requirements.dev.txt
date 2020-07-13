@@ -5,3 +5,4 @@ black
 pep8
 bandit
 flake8
+requests
