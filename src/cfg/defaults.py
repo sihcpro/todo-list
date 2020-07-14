@@ -1,6 +1,6 @@
 # Application
-APP_SORT_NAME = "BAS"
-APP_NAME = "Bridging All Space"
+APP_SORT_NAME = "TODO"
+APP_NAME = "Todo List"
 APP_HOST = "0.0.0.0"
 APP_PORT = 8088
 
