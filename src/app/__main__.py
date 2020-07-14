@@ -1,10 +1,10 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-from base.connection import init_engine
+from base.connection import initEngine
 from base.domain import Domain
 from cfg import config
-from route.work_management import config_work_management
-from route.work_viewer import config_work_viewer
+from route.work_management import configWorkManagement
+from route.work_viewer import configWorkViewer
 
 
 def run(server_class=HTTPServer, handler_class=BaseHTTPRequestHandler):
@@ -14,7 +14,7 @@ def run(server_class=HTTPServer, handler_class=BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    init_engine()
-    config_work_management(Domain)
-    config_work_viewer(Domain)
+    initEngine()
+    configWorkManagement(Domain)
+    configWorkViewer(Domain)
     run(handler_class=Domain)

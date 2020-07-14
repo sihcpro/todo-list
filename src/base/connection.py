@@ -4,14 +4,14 @@ from sqlalchemy.orm import sessionmaker
 from cfg import config
 
 
-def init_engine(echo=config.DEBUG_SQL):
+def initEngine(echo=config.DEBUG_SQL):
     return create_engine(config.DB_CONNECTION, echo=echo)
 
 
-def init_session_class(bind=init_engine()):
+def initSessionClass(bind=initEngine()):
     return sessionmaker(bind=bind)
 
 
-def init_session():
-    Session = init_session_class()
+def initSession():
+    Session = initSessionClass()
     return Session()

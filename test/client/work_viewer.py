@@ -16,8 +16,8 @@ class TestWorkItemAPI:
         self._session.verify = False
         return self._session
 
-    def testShowWorkByDate(self, construct_url, test_id, dateToStr):
-        seed(test_id)
+    def testShowWorkByDate(self, constructUrl, testId, dateToStr):
+        seed(testId)
         params = {
             "from_date": dateToStr(
                 datetime.utcnow() - timedelta(days=randrange(10))
@@ -28,12 +28,12 @@ class TestWorkItemAPI:
         }
 
         response = self.session.get(
-            url=construct_url("show-work-by-date"), params=params,
+            url=constructUrl("show-work-by-date"), params=params,
         )
         assert response.status_code in self.SUCCESS_CODE
 
-    def testShowWorkByWeek(self, construct_url, test_id, dateToStr):
-        seed(test_id)
+    def testShowWorkByWeek(self, constructUrl, testId, dateToStr):
+        seed(testId)
         params = {
             "from_date": dateToStr(
                 datetime.utcnow() - timedelta(days=randrange(20))
@@ -44,12 +44,12 @@ class TestWorkItemAPI:
         }
 
         response = self.session.get(
-            url=construct_url("show-work-by-week"), params=params,
+            url=constructUrl("show-work-by-week"), params=params,
         )
         assert response.status_code in self.SUCCESS_CODE
 
-    def testShowWorkByMonth(self, construct_url, test_id, dateToStr):
-        seed(test_id)
+    def testShowWorkByMonth(self, constructUrl, testId, dateToStr):
+        seed(testId)
         params = {
             "from_date": dateToStr(
                 datetime.utcnow() - timedelta(days=randrange(100))
@@ -60,6 +60,6 @@ class TestWorkItemAPI:
         }
 
         response = self.session.get(
-            url=construct_url("show-work-by-month"), params=params,
+            url=constructUrl("show-work-by-month"), params=params,
         )
         assert response.status_code in self.SUCCESS_CODE

@@ -7,10 +7,10 @@ class Config:
     def __init__(self, module_name="BAS"):
         self.module_name = module_name
         self.defaults = None
-        self.defaults = self.load_file_config("./src/cfg/defaults.py")
+        self.defaults = self.loadFileConfig("./src/cfg/defaults.py")
 
-    def load_file_config(self, file_config_path):
-        def _load_config(_file):
+    def loadFileConfig(self, file_config_path):
+        def _loadConfig(_file):
             config = {}
             for key, value in _file.__dict__.items():
                 key_upper = key.upper()
@@ -28,13 +28,13 @@ class Config:
         file_config = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(file_config)
 
-        config = _load_config(file_config)
+        config = _loadConfig(file_config)
         self.module_config.update(config)
         return self.module_config
 
-    def load_config(self, env):
+    def loadConfig(self, env):
         file_config_path = f"./env/{env}/config.py"
-        self.load_file_config(file_config_path)
+        self.loadFileConfig(file_config_path)
         return self.module_config
 
     def __getattr__(self, value):

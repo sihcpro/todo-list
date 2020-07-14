@@ -5,8 +5,7 @@ from http.server import SimpleHTTPRequestHandler
 from urllib.parse import parse_qs, unquote
 
 from cfg import logger
-
-from .connection import init_session
+from .connection import initSession
 
 
 def loadUrl(path) -> (str, int, dict):
@@ -32,7 +31,7 @@ def loadData(request) -> dict:
 class Domain(SimpleHTTPRequestHandler):
     query_handler = {}
     command_handler = {}
-    session = init_session()
+    session = initSession()
 
     def do_GET(self):
         logger.debug("GET - %s : %r", self.client_address[0], self.path)

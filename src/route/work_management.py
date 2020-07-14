@@ -5,7 +5,7 @@ from .data_define import AddWorkData, UpdateWorkData
 from .resource import WorkResource
 
 
-def config_work_management(Domain):
+def configWorkManagement(Domain):
     session = Domain.session
     ignore_extra = config.IGNORE_EXTRA_FIELDS
 
@@ -15,7 +15,7 @@ def config_work_management(Domain):
         new_work = WorkResource(**verified_data.serialize())
         session.add(new_work)
         session.commit()
-        return new_work.as_dict()
+        return new_work.asDict()
 
     @Domain.registerCommand("update-work")
     def updateWork(data, identifier, param):
@@ -51,7 +51,7 @@ def config_work_management(Domain):
     def showWork(data, identifier, param):
         if identifier < 0:
             results = session.query(WorkResource).all()
-            return [result.as_dict() for result in results]
+            return [result.asDict() for result in results]
         else:
             result = (
                 session.query(WorkResource)
@@ -60,4 +60,4 @@ def config_work_management(Domain):
             )
             if result is None:
                 raise NotFoundErr("Work not found")
-            return result.as_dict()
+            return result.asDict()

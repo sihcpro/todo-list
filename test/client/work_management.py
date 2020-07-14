@@ -20,11 +20,11 @@ class TestWorkItemAPI:
 
     @pytest.mark.create_work
     def testAddWork(
-        self, construct_url, test_id, get_item_id, log_response, compare
+        self, constructUrl, testId, getItemId, logResponse, compare
     ):
-        seed(test_id)
+        seed(testId)
         data = {
-            "name": f"Work {test_id}",
+            "name": f"Work {testId}",
             "starting_date": str(
                 datetime.utcnow() - timedelta(days=randrange(3))
             ),
@@ -33,21 +33,21 @@ class TestWorkItemAPI:
             ),
             "status": choice(["Planning", "Doing", "Complete"]),
         }
-        response = self.session.post(url=construct_url("add-work"), json=data,)
-        log_response(response)
+        response = self.session.post(url=constructUrl("add-work"), json=data,)
+        logResponse(response)
         assert response.status_code in self.SUCCESS_CODE
-        self.result["work_id"] = get_item_id(response)
+        self.result["work_id"] = getItemId(response)
 
         response = self.session.get(
-            url=construct_url("show-work", str(self.result["work_id"]))
+            url=constructUrl("show-work", str(self.result["work_id"]))
         )
         assert response.status_code in self.SUCCESS_CODE
         assert compare(response, data) is True
 
-    def testUpdateWork(self, construct_url, test_id, log_response, compare):
-        seed(test_id)
+    def testUpdateWork(self, constructUrl, testId, logResponse, compare):
+        seed(testId)
         data = {
-            "name": f"Work {test_id}",
+            "name": f"Work {testId}",
             "starting_date": str(
                 datetime.utcnow() - timedelta(days=randrange(3))
             ),
@@ -57,26 +57,26 @@ class TestWorkItemAPI:
             "status": choice(["Planning", "Doing", "Complete"]),
         }
         response = self.session.post(
-            url=construct_url("update-work", str(self.result["work_id"])),
+            url=constructUrl("update-work", str(self.result["work_id"])),
             json=data,
         )
-        log_response(response)
+        logResponse(response)
         assert response.status_code in self.SUCCESS_CODE
 
         response = self.session.get(
-            url=construct_url("show-work", str(self.result["work_id"]))
+            url=constructUrl("show-work", str(self.result["work_id"]))
         )
         assert response.status_code in self.SUCCESS_CODE
         assert compare(response, data) is True
 
-    def testDeleteWork(self, construct_url, log_response):
+    def testDeleteWork(self, constructUrl, logResponse):
         response = self.session.post(
-            url=construct_url("delete-work", str(self.result["work_id"])),
+            url=constructUrl("delete-work", str(self.result["work_id"])),
         )
-        log_response(response)
+        logResponse(response)
         assert response.status_code in self.SUCCESS_CODE
 
         response = self.session.get(
-            url=construct_url("show-work", str(self.result["work_id"]))
+            url=constructUrl("show-work", str(self.result["work_id"]))
         )
         assert response.status_code not in self.SUCCESS_CODE

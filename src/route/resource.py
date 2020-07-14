@@ -3,7 +3,7 @@ from sqlalchemy import Column, DateTime, Enum, Integer, Sequence, String
 from base.entity import WorkStatus
 from base.resource import Base
 from cfg import config
-from helper.factory import to_json_value
+from helper.factory import toJsonValue
 
 
 class WorkResource(Base):
@@ -28,11 +28,11 @@ class WorkResource(Base):
     ending_date = Column(DateTime(timezone=False))
     status = Column(Enum(WorkStatus))
 
-    def as_dict(self):
+    def asDict(self):
         return {
             "id": self.id,
             "name": self.name,
-            "starting_date": to_json_value(self.starting_date),
-            "ending_date": to_json_value(self.ending_date),
-            "status": to_json_value(self.status),
+            "starting_date": toJsonValue(self.starting_date),
+            "ending_date": toJsonValue(self.ending_date),
+            "status": toJsonValue(self.status),
         }

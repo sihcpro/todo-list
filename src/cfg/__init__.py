@@ -1,7 +1,7 @@
 from .load_config import Config
-from .logger import setup_logger
+from .logger import setupLogger
 
 config = Config("TodoList")
-logger = setup_logger(config, config.APP_SORT_NAME, config.LOG_LEVEL)
+logger = setupLogger(config, config.APP_SORT_NAME, config.LOG_LEVEL)
 
 __all__ = ("config", "logger")

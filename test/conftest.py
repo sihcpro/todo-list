@@ -4,7 +4,7 @@ from datetime import datetime
 import pytest
 from cfg import config, logger
 
-TEST_ID = datetime.now().strftime("%Y%m%d-%H:%M:%S")
+testId = datetime.now().strftime("%Y%m%d-%H:%M:%S")
 BASE_URL = "http://localhost:8088"
 DEBUG = True
 
@@ -14,7 +14,7 @@ def getResponseData(response):
 
 
 @pytest.fixture
-def construct_url():
+def constructUrl():
     def join(*args):
         return os.path.join(BASE_URL, *args)
 
@@ -22,27 +22,27 @@ def construct_url():
 
 
 @pytest.fixture
-def test_id():
-    return TEST_ID
+def testId():
+    return testId
 
 
 @pytest.fixture
-def get_item_id():
-    def _get_resp(response):
+def getItemId():
+    def _getResp(response):
         data = getResponseData(response)
         logger.warning("data %r", data)
         return data["id"]
 
-    return _get_resp
+    return _getResp
 
 
 @pytest.fixture
-def log_response():
-    def _log_response(response):
+def logResponse():
+    def _logResponse(response):
         if DEBUG:
             logger.info("response:", response.__dict__)
 
-    return _log_response
+    return _logResponse
 
 
 @pytest.fixture

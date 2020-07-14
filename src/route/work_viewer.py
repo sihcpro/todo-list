@@ -1,13 +1,12 @@
 import calendar
 from datetime import timedelta
-
 from sqlalchemy import Date, and_, cast, or_
 
 from .data_define import ShowWorkData
 from .resource import WorkResource
 
 
-def config_work_viewer(Domain):
+def configWorkViewer(Domain):
     session = Domain.session
 
     def getValidatedDate(param):
@@ -56,7 +55,7 @@ def config_work_viewer(Domain):
                 )
                 .all()
             )
-        record["works"] = [work.as_dict() for work in works]
+        record["works"] = [work.asDict() for work in works]
         return record
 
     @Domain.registerQuery("show-work-by-date")
