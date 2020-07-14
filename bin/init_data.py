@@ -1,7 +1,15 @@
+import sqlalchemy
+
 from base.connection import initEngine
 from base.resource import Base
-from work_management import resource as work_resource
+from cfg import config
+from route import resource
 
-Base.metadata.create_all(initEngine(echo=True))
 
-__all__ = ("work_resource",)
+engine = initEngine(echo=True)
+
+if not engine.dialect.has_schema(engine, config.SCHEMA_NAME):
+    engine.execute(sqlalchemy.schema.CreateSchema(config.SCHEMA_NAME))
+Base.metadata.create_all(engine)
+
+__all__ = ("resource",)
