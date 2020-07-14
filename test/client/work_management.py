@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
+from random import choice, randrange, seed
 
 import requests
+
+import pytest
 
 
 class TestWorkItemAPI:
@@ -15,14 +18,20 @@ class TestWorkItemAPI:
         self._session.verify = False
         return self._session
 
+    @pytest.mark.create_work
     def testAddWork(
         self, construct_url, test_id, get_item_id, log_response, compare
     ):
+        seed(test_id)
         data = {
             "name": f"Work {test_id}",
-            "starting_date": str(datetime.utcnow()),
-            "ending_date": str(datetime.utcnow() + timedelta(days=1)),
-            "status": "Planning",
+            "starting_date": str(
+                datetime.utcnow() - timedelta(days=randrange(3))
+            ),
+            "ending_date": str(
+                datetime.utcnow() + timedelta(days=randrange(3))
+            ),
+            "status": choice(["Planning", "Doing", "Complete"]),
         }
         response = self.session.post(url=construct_url("add-work"), json=data,)
         log_response(response)
@@ -35,14 +44,17 @@ class TestWorkItemAPI:
         assert response.status_code in self.SUCCESS_CODE
         assert compare(response, data) is True
 
-    def testUpdateWork(
-        self, construct_url, test_id, get_item_id, log_response, compare
-    ):
+    def testUpdateWork(self, construct_url, test_id, log_response, compare):
+        seed(test_id)
         data = {
             "name": f"Work {test_id}",
-            "starting_date": str(datetime.utcnow()),
-            "ending_date": str(datetime.utcnow() + timedelta(days=1)),
-            "status": "Planning",
+            "starting_date": str(
+                datetime.utcnow() - timedelta(days=randrange(3))
+            ),
+            "ending_date": str(
+                datetime.utcnow() + timedelta(days=randrange(3))
+            ),
+            "status": choice(["Planning", "Doing", "Complete"]),
         }
         response = self.session.post(
             url=construct_url("update-work", str(self.result["work_id"])),
@@ -57,9 +69,7 @@ class TestWorkItemAPI:
         assert response.status_code in self.SUCCESS_CODE
         assert compare(response, data) is True
 
-    def testDeleteWork(
-        self, construct_url, test_id, get_item_id, log_response, compare
-    ):
+    def testDeleteWork(self, construct_url, log_response):
         response = self.session.post(
             url=construct_url("delete-work", str(self.result["work_id"])),
         )

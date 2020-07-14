@@ -9,3 +9,6 @@ init-db:
 
 run-test:
 	$(PYTEST) ./test/**/*.py
+
+create-data:
+	$(PYTEST) ./test/**/*.py -m create_work

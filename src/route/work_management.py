@@ -1,17 +1,12 @@
-from datetime import datetime
 from xml.dom import NotFoundErr
 
-from cfg import config, logger
-from helper.factory import str_to_datetime
-from sqlalchemy import Date, cast, or_
-
+from cfg import config
 from .data_define import AddWorkData, UpdateWorkData
 from .resource import WorkResource
 
 
 def config_work_management(Domain):
     session = Domain.session
-
     ignore_extra = config.IGNORE_EXTRA_FIELDS
 
     @Domain.registerCommand("add-work")
@@ -66,18 +61,3 @@ def config_work_management(Domain):
             if result is None:
                 raise NotFoundErr("Work not found")
             return result.as_dict()
-
-    @Domain.registerQuery("show-work-by-day")
-    def showWork(data, identifier, param):
-        date = str_to_datetime(param.get("date", datetime.now()))
-        result = (
-            session.query(WorkResource)
-            .filter(
-                or_(cast(WorkResource.starting_date, Date) == date.today(),)
-            )
-            .all()
-        )
-        logger.debug
-        if result is None:
-            raise NotFoundErr("Work not found")
-        return result.as_dict()

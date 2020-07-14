@@ -2,7 +2,7 @@ import json
 import urllib.parse as urlparse
 from functools import wraps
 from http.server import SimpleHTTPRequestHandler
-from urllib.parse import parse_qs
+from urllib.parse import parse_qs, unquote
 
 from cfg import logger
 
@@ -16,7 +16,8 @@ def loadUrl(path) -> (str, int, dict):
     request_identifier = (
         int(request_paths[2]) if len(request_paths) > 2 else -1
     )
-    request_params = parse_qs(request.query)
+    request_params = parse_qs(unquote(request.query))
+    logger.debug("param %r", request_params)
     return request_target, request_identifier, request_params
 
 
@@ -52,7 +53,7 @@ class Domain(SimpleHTTPRequestHandler):
                 logger.debug(
                     f"{request_target} not in {Domain.query_handler.keys()}"
                 )
-                raise Exception("Not found!", data=request_params)
+                raise Exception("Not found!")
         except Exception as e:
             self.session.rollback()
             logger.exception(e)
@@ -86,7 +87,7 @@ class Domain(SimpleHTTPRequestHandler):
                 logger.debug(
                     f"{request_target} not in {Domain.command_handler.keys()}"
                 )
-                raise Exception("Not found!", data=request_data)
+                raise Exception("Not found!")
             self.session.commit()
         except Exception as e:
             logger.exception(e)

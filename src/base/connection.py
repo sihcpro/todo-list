@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from cfg import config
 
 
-def init_engine(echo=True):
+def init_engine(echo=config.DEBUG_SQL):
     return create_engine(config.DB_CONNECTION, echo=echo)
 
 

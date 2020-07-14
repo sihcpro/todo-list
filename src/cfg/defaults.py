@@ -21,3 +21,7 @@ DATE_FMT = "%Y-%m-%d"
 
 # Validation
 IGNORE_EXTRA_FIELDS = True
+
+# Invironment
+DEBUG = True
+DEBUG_SQL = False

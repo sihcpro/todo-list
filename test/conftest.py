@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 import pytest
-from cfg import logger
+from cfg import config, logger
 
 TEST_ID = datetime.now().strftime("%Y%m%d-%H:%M:%S")
 BASE_URL = "http://localhost:8088"
@@ -43,6 +43,14 @@ def log_response():
             logger.info("response:", response.__dict__)
 
     return _log_response
+
+
+@pytest.fixture
+def dateToStr():
+    def _dateToStr(time):
+        return time.strftime(config.DATE_FMT)
+
+    return _dateToStr
 
 
 @pytest.fixture
