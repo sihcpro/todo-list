@@ -50,3 +50,7 @@ pip install -r requirements.dev.txt
 ```bash
 make run-test
 ```
+
+## Postman
+
+https://www.getpostman.com/collections/5da670cfcd6c43a90610
